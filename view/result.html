@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+        <meta charset="utf-8"/>
+        <title>验证器生成器</title>
+        <meta name="description" content="overview &amp; stats"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0"/>
+        <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+    </head>
+
+    <body>
+        <table class="table table-striped table-bordered table-hover">
+            <thead>
+                <tr>
+                    <th>数据表</th>
+                    <th>生成结果</th>
+                </tr>
+            </thead>
+            <tbody>
+            {volist name="$result" id="vo"}
+            <tr class='{switch name="vo"}{case value="0"}danger{/case}{case value="1"}success{/case}{default /}danger{/switch}'>
+                <td>{$key}</td>
+                <td>{switch name="vo"}
+                    {case value="0"}生成失败{/case}
+                    {case value="1"}生成成功{/case}
+                    {default /}异常结果
+                    {/switch}
+                </td>
+            </tr>
+            {/volist}
+            <tr>
+                <td colspan="3">
+                    <a href="{$index}" class="btn btn-primary">继续生成</a>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </body>
+</html>

@@ -1,0 +1,22 @@
+{
+    "name": "thinkphp5/validator",
+    "description": "validator",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Rudy",
+            "email": "454106101@163.com"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {},
+    "autoload": {
+        "psr-4": {
+            "thinkphp5\\validator\\": "src/"
+        },
+        "files": [
+            "src/common.php"
+        ]
+    }
+}
