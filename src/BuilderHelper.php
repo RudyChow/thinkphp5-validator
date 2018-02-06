@@ -60,7 +60,6 @@ class BuilderHelper
         }
 
 
-
         /*
          * 如果文件夹不存在，则创建文件夹
          */
@@ -143,10 +142,10 @@ class BuilderHelper
             }
             $output = '<?php' . $view->fetch(VALIDATOR_TEMPLATE_PATH . 'validate.tpl', $params);
 
-            if(file_put_contents($file_name, $output)){
+            if (file_put_contents($file_name, $output)) {
                 $tables[$table_name] = 1;
                 chmod($file_name, 0664);
-            }else{
+            } else {
                 $tables[$table_name] = 0;
             }
         }
@@ -156,7 +155,10 @@ class BuilderHelper
     private function parseInt(&$rule, $field, $max)
     {
         $rule[] = 'integer';
-        $rule[] = strpos($field['data_type'], 'unsigned') !== false ? 'length:0,' . ($max - 1) : 'length:-' . ($half = intval($max / 2)) . ',' . ($half - 1);
+        if (strpos($field['data_type'], 'unsigned')) {
+            $rule[] = 'egt:0';
+        }
+///        $rule[] = strpos($field['data_type'], 'unsigned') !== false ? 'length:0,' . ($max - 1) : 'length:-' . ($half = intval($max / 2)) . ',' . ($half - 1);
     }
 
     private function parseDecimal(&$rule, $field)
