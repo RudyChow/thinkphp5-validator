@@ -31,7 +31,10 @@
 
 `$ composer require --dev thinkphp5/validator:dev-master`
 
-### × composer引用（待编辑）
+### × composer引用
+
+`$ composer require thinkphp5/validator`
+
 
 ## 怎么使用
 

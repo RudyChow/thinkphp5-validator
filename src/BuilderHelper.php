@@ -97,20 +97,11 @@ class BuilderHelper
                 }
                 switch ($field['data_type']) {
                     case 'tinyint':
-                        $this->parseInt($rule, $field, pow(2, 8));
-                        break;
                     case 'smallint':
-                        $this->parseInt($rule, $field, pow(2, 16));
-                        break;
-                    case 'MEDIUMINT':
-                        $this->parseInt($rule, $field, pow(2, 24));
-                        break;
+                    case 'mediumint':
                     case 'int':
-                        $this->parseInt($rule, $field, pow(2, 32));
-                        break;
                     case 'bigint'://int
-                        $this->parseInt($rule, $field, pow(2, 64));
-                        break;
+                        $this->parseInt($rule, $field);
                         break;
                     case 'float':
                     case 'double':
@@ -152,7 +143,7 @@ class BuilderHelper
         return $tables;
     }
 
-    private function parseInt(&$rule, $field, $max)
+    private function parseInt(&$rule, $field)
     {
         $rule[] = 'integer';
         if (strpos($field['data_type'], 'unsigned')) {
