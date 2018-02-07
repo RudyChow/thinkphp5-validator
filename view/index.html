@@ -11,6 +11,7 @@
 
     <body>
         <table class="table table-striped table-bordered table-hover">
+            <form action="{$action}" method="post">
             <thead>
                 <tr class="alert alert-info">
                     <td colspan="4">* warning提示的行代表已存在该验证器<br/>* <button type="button" class="btn btn-info">快速选中</button>会选中所有不存在的验证器</td>
@@ -33,7 +34,6 @@
                 </tr>
             </thead>
             <tbody>
-            <form action="{$action}" method="post">
                 {volist name="tables" id="vo"}
                 <tr class='{switch name="vo.is_exist"}{case value="1"}warning{/case}{default /}not_exist{/switch}'>
                     <th><input type="checkbox" class="tables" name="tables[]" value="{$vo.table_name}"/></th>

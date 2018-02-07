@@ -38,13 +38,9 @@ class BuilderHelper
     {
         $validators = $this->getAllValidator();
         $result = $this->connect->table('TABLES')->field(['TABLE_NAME as table_name', 'TABLE_COMMENT as table_comment'])->where('TABLE_SCHEMA', $this->origin_db)->select();
-        //添加是否存在验证器的属性
-        foreach ($result as &$v) {
-            $v['is_exist'] = in_array($v['table_name'], $validators) ? 1 : 0;
-        }
-        //排序,不存在的在先
-        foreach ($result as $key => $row){
-            $exist[$key] = $row['is_exist'];
+        //添加是否存在验证器的属性并且排序,不存在的在先
+        foreach ($result as $key => &$v) {
+            $exist[$key] = $v['is_exist'] = in_array($v['table_name'], $validators) ? 1 : 0;
         }
         array_multisort($exist, SORT_ASC, $result);
 
