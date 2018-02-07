@@ -4,7 +4,7 @@
 
 但其实大多数验证规则都是通过数据库中的字段定义上进行修改而来的
 
-由于之前用的是yii2，收到其gii2的启发
+由于之前用的是yii2，受到其gii2的启发
 
 想着做一个基于thinkphp5的composer插件，用以生成对应的验证器
 
@@ -48,5 +48,5 @@
 
 ## 效果
 ![alt img](http://wx2.sinaimg.cn/large/6337e4fcgy1fo6tfhqqplj21g00pbq5j.jpg)
-![alt img](http://wx2.sinaimg.cn/large/6337e4fcgy1fo6tfhpv2ij21g00pbaci.jpg)
+![alt img](http://wx3.sinaimg.cn/large/6337e4fcgy1fo7n7gezd6j21g00pbaci.jpg)
 ![alt img](http://wx3.sinaimg.cn/large/6337e4fcgy1fo6tfhrgtkj20kf0pnwi9.jpg)

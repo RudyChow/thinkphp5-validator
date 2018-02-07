@@ -97,11 +97,19 @@ class BuilderHelper
                 }
                 switch ($field['data_type']) {
                     case 'tinyint':
+                        $this->parseInt($rule, $field, pow(2, 8));
+                        break;
                     case 'smallint':
+                        $this->parseInt($rule, $field, pow(2, 16));
+                        break;
                     case 'mediumint':
+                        $this->parseInt($rule, $field, pow(2, 24));
+                        break;
                     case 'int':
+                        $this->parseInt($rule, $field, pow(2, 32));
+                        break;
                     case 'bigint'://int
-                        $this->parseInt($rule, $field);
+                        $this->parseInt($rule, $field, pow(2, 64));
                         break;
                     case 'float':
                     case 'double':
@@ -124,7 +132,7 @@ class BuilderHelper
                     case 'year':
                     case 'datetime':
                     case 'timestamp':
-                        $this->parseDate($rule, $field);
+                        $this->parseDate($rule);
                         break;
                     default:
                         break;
@@ -143,19 +151,19 @@ class BuilderHelper
         return $tables;
     }
 
-    private function parseInt(&$rule, $field)
+    private function parseInt(&$rule, $field, $max)
     {
         $rule[] = 'integer';
-        if (strpos($field['data_type'], 'unsigned')) {
-            $rule[] = 'egt:0';
-        }
-///        $rule[] = strpos($field['data_type'], 'unsigned') !== false ? 'length:0,' . ($max - 1) : 'length:-' . ($half = intval($max / 2)) . ',' . ($half - 1);
+//        if (strpos($field['data_type'], 'unsigned')) {
+//            $rule[] = 'egt:0';
+//        }
+        $rule[] = strpos($field['data_type'], 'unsigned') !== false ? 'length:0,' . ($max - 1) : 'length:-' . ($half = $max / 2) . ',' . ($half - 1);
     }
 
     private function parseDecimal(&$rule, $field)
     {
         $rule[] = 'number';
-        $rule[] = 'regex:\d{1,' . intval($field['num_len'] - $field['num_scale']) . '}' . ($field['num_scale'] > 0 ? '(\.\d{1,' . $field['num_scale'] . '})?' : '');
+        $rule[] = 'regex:\d{1,' . ($field['num_len'] - $field['num_scale']) . '}' . ($field['num_scale'] > 0 ? '(\.\d{1,' . $field['num_scale'] . '})?' : '');
     }
 
     private function parseString(&$rule, $field)
@@ -168,7 +176,7 @@ class BuilderHelper
         $rule[] = 'in:' . str_replace(['enum(', ')', "'"], '', $field['col_type']);
     }
 
-    private function parseDate(&$rule, $field)
+    private function parseDate(&$rule)
     {
         $rule[] = 'date';
     }
