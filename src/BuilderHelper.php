@@ -36,7 +36,19 @@ class BuilderHelper
      */
     public function getTables()
     {
-        return $this->connect->table('TABLES')->field(['TABLE_NAME as table_name', 'TABLE_COMMENT as table_comment'])->where('TABLE_SCHEMA', $this->origin_db)->select();
+        $validators = $this->getAllValidator();
+        $result = $this->connect->table('TABLES')->field(['TABLE_NAME as table_name', 'TABLE_COMMENT as table_comment'])->where('TABLE_SCHEMA', $this->origin_db)->select();
+        //添加是否存在验证器的属性
+        foreach ($result as &$v) {
+            $v['is_exist'] = in_array($v['table_name'], $validators) ? 1 : 0;
+        }
+        //排序,不存在的在先
+        foreach ($result as $key => $row){
+            $exist[$key] = $row['is_exist'];
+        }
+        array_multisort($exist, SORT_ASC, $result);
+
+        return $result;
     }
 
     /**
@@ -179,5 +191,44 @@ class BuilderHelper
     private function parseDate(&$rule)
     {
         $rule[] = 'date';
+    }
+
+    /**
+     * @author: Rudy
+     * @time: 2018年2月7日
+     * description:获取现有的已存在的验证器
+     * @return array
+     */
+    private function getAllValidator()
+    {
+        $result = [];
+
+        if (is_dir(VALIDATOR_OUTPUT_PATH)) {
+            $result = scandir(VALIDATOR_OUTPUT_PATH);
+        }
+
+        if (!empty($result)) {
+            unset($result[array_search('.', $result)]);
+            unset($result[array_search('..', $result)]);
+            foreach ($result as &$v) {
+                $this->up2Line($v, '.php', $this->prefix);
+            }
+        }
+
+        return $result;
+    }
+
+    private function up2Line(&$origin, $cut = '', $prefix = '', $split_char = '_')
+    {
+        //去掉不要的部分
+        if ($cut != '') {
+            $origin = str_replace($cut, '', $origin);
+        }
+        //大写变小写带下划线
+        $origin = strtolower(substr(preg_replace("/([A-Z])/", "{$split_char}\\1", $origin), 1));
+        //加前缀
+        if ($prefix != '') {
+            $origin = $prefix . $origin;
+        }
     }
 }
