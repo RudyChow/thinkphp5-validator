@@ -9,21 +9,24 @@
 namespace thinkphp5\validator;
 
 
-use think\Config;
+use think\facade\Config;
+use think\facade\Env;
+use think\facade\View;
 use think\Db;
-use think\View;
 
 class BuilderHelper
 {
     private $origin_db = '';
     private $prefix = '';
     private $connect = null;
+    private $output_path = '';
 
     public function __construct()
     {
-        $config = Config::get('database');
+        $config = Config::pull('database');
         $this->origin_db = $config['database'];
         $this->prefix = $config['prefix'];
+        $this->output_path = Env::get('app_path') . 'common' . DIRECTORY_SEPARATOR . 'validate' . DIRECTORY_SEPARATOR;
         $config['database'] = 'INFORMATION_SCHEMA';
         $this->connect = Db::connect($config);
     }
@@ -71,9 +74,9 @@ class BuilderHelper
         /*
          * 如果文件夹不存在，则创建文件夹
          */
-        if (!is_dir(VALIDATOR_OUTPUT_PATH)) {
+        if (!is_dir($this->output_path)) {
             $old = umask(0);
-            mkdir(VALIDATOR_OUTPUT_PATH, 0775, true);
+            mkdir($this->output_path, 0775, true);
             unset($old);
         }
 
@@ -88,7 +91,7 @@ class BuilderHelper
             $params['validator'] = array_reduce(explode('_', str_replace($this->prefix, '', $table_name)), function ($carry, $item) {
                 return ucfirst($carry) . ucfirst($item);
             });
-            $file_name = VALIDATOR_OUTPUT_PATH . $params['validator'] . '.php';
+            $file_name = $this->output_path . $params['validator'] . '.php';
             if (!$override && file_exists($file_name)) {
                 $tables[$table_name] = 0;
                 continue;
@@ -147,7 +150,7 @@ class BuilderHelper
                 }
                 $params['rules'][$field['col_name']] = implode('|', $rule);
             }
-            $output = '<?php' . $view->fetch(VALIDATOR_TEMPLATE_PATH . 'validate.tpl', $params);
+            $output = '<?php' . $view::fetch(VALIDATOR_TEMPLATE_PATH . 'validate.tpl', $params);
 
             if (file_put_contents($file_name, $output)) {
                 $tables[$table_name] = 1;
@@ -199,8 +202,8 @@ class BuilderHelper
     {
         $result = [];
 
-        if (is_dir(VALIDATOR_OUTPUT_PATH)) {
-            $result = scandir(VALIDATOR_OUTPUT_PATH);
+        if (is_dir($this->output_path)) {
+            $result = scandir($this->output_path);
         }
 
         if (!empty($result)) {

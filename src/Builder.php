@@ -3,8 +3,8 @@
 namespace thinkphp5\validator;
 
 use think\Controller;
+use think\facade\Url;
 use think\Request;
-use think\Url;
 
 class Builder extends Controller
 {

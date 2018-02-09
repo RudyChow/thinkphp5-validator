@@ -31,10 +31,17 @@
 
 `$ composer require --dev thinkphp5/validator:dev-master`
 
+>   thinkphp5.1.* 版本对应2.0分支
+
+>   thinkphp5.0.* 版本对应1.0分支
+
 ### × composer引用
 
 `$ composer require thinkphp5/validator`
 
+>   thinkphp5.1.* 版本对应composer 2.*版本
+
+>   thinkphp5.0.* 版本对应composer 1.*版本
 
 ## 怎么使用
 
