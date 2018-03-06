@@ -28,7 +28,7 @@ class Builder extends Controller
         }
 
         $helper = new BuilderHelper();
-        $result = $helper->generate($data['tables'], $data['override']);
+        $result = $helper->generate($data['tables']);
 
         $this->assign('result', $result);
         $this->assign('index', Url::build('/validator_builder', '', false));

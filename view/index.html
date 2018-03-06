@@ -14,16 +14,16 @@
             <form action="{$action}" method="post">
             <thead>
                 <tr class="alert alert-info">
-                    <td colspan="4">* warning提示的行代表已存在该验证器<br/>* <button type="button" class="btn btn-info">快速选中</button>会选中所有不存在的验证器</td>
+                    <td colspan="4"><button type="button" class="btn btn-info">快速选中</button>会选中所有不存在的验证器</td>
                 </tr>
 
                 <tr>
                     <td colspan="4">
-                        <input type="hidden" name="override" id="override" value="0"/>
-                        <button type="button" class="btn btn-info" id="select-all" data-status="0">全选</button>
+                        <!--<input type="hidden" name="override" id="override" value="0"/>-->
+                        <!--<button type="button" class="btn btn-info" id="select-all" data-status="0">全选</button>-->
                         <button type="button" class="btn btn-info" id="select-not-esist" data-status="0">快速选中</button>
-                        <button type="button" class="btn btn-info" id="quick-btn">快速生成</button>
-                        <button type="button" class="btn btn-primary" id="override-btn">覆盖生成</button>
+                        <button type="button" class="btn btn-info" id="quick-btn">生成</button>
+                        <!--<button type="button" class="btn btn-primary" id="override-btn">覆盖生成</button>-->
                     </td>
                 </tr>
                 <tr>
@@ -54,26 +54,26 @@
             $('#override').val(0);
             $('form').submit();
         })
-        $('#override-btn').on('click',function () {
-            if(confirm('此操作会覆盖掉原有的验证器，确定要覆盖吗？')){
-                $('#override').val(1);
-                $('form').submit();
-            }
-        })
-        $('#select-all').click(function(){
-            if($(this).attr('data-status') == 0){
-                $('.tables').each(function(){
-                    $(this).prop("checked",true);
-                });
-                $(this).attr('data-status',1);
-            }else{
-                $('.tables').each(function(){
-                    $(this).prop("checked",false);
-                });
-                $(this).attr('data-status',0);
-            }
-
-        });
+        // $('#override-btn').on('click',function () {
+        //     if(confirm('此操作会覆盖掉原有的验证器，确定要覆盖吗？')){
+        //         $('#override').val(1);
+        //         $('form').submit();
+        //     }
+        // })
+        // $('#select-all').click(function(){
+        //     if($(this).attr('data-status') == 0){
+        //         $('.tables').each(function(){
+        //             $(this).prop("checked",true);
+        //         });
+        //         $(this).attr('data-status',1);
+        //     }else{
+        //         $('.tables').each(function(){
+        //             $(this).prop("checked",false);
+        //         });
+        //         $(this).attr('data-status',0);
+        //     }
+        //
+        // });
         $('#select-not-esist').click(function(){
             if($(this).attr('data-status') == 0){
                 $('.not_exist .tables').each(function(){
