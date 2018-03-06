@@ -55,7 +55,7 @@ class BuilderHelper
      * @param $override
      * @return array
      */
-    public function generate($tables, $override)
+    public function generate($tables, $override = 0)
     {
         $tables_data = [];
         $result = $this->connect->table('COLUMNS')->field([
